@@ -1,9 +1,8 @@
 import sys
 import ply.yacc as yacc
-from erros import errors
-import declarations
+from utils.erros import errors
 from declarations import *
-from src.First_Part.lex_rules import tokens
+from lex_rules import tokens
 import mylexer
 
 if "cmm" not in sys.argv[0]:
