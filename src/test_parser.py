@@ -1,12 +1,11 @@
 from parser_rules import parser
+from lex_rules import lexer
 
 def main():
-    with open('input.txt', 'r') as file:
+    with open('src/input.txt', 'r') as file:
         code = file.read()
-    lexer.input(code)
 
-    # Analisa o código
-    result = parser.parse(code)
+    result = parser.parse(input=code, lexer=lexer, debug=False)
 
     print("Parse result:")
     print(result)
