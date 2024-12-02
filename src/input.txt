@@ -1,3 +1,34 @@
-if (x == 10) {
-        return y + 5;
+bool flag = true;
+
+for (int i = 0; i < 10; i++) {
+    if (i % 2 == 0) {
+        write("Even number: ");
+        write(i);
+    } else {
+        write("Odd number: ");
+        write(i);
     }
+    
+    if (i == 5) {
+        read(flag);
+        if (flag == false) {
+            break;
+        }
+    }
+}
+
+string message = "Loop completed!";
+while (flag) {
+    write(message);
+    flag = false;
+}
+
+int result = 0;
+bool condition = true;
+if (condition) {
+    result = 42;
+} else {
+    result = -1;
+}
+
+return result;

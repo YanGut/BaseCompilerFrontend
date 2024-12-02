@@ -17,90 +17,66 @@ keywords = {
 }
 
 tokens = [
-    'KEYWORD', 'IDENTIFIER', 'CONSTANT', 'OPERATOR', 'DELIMITER', 'COMMENT', 'NAME', 'NUMBER', 'NORMALSTRING', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN',
-    'RPAREN', 'LPAREN', 'RCOLC', 'LCOLC', 'RBRACE', 'LBRACE', 'COMMA', 'SEMICOLON', 'OR', 'AND', 'EXPLAMATION', 'INTERROGATION', 'COLON',
-    'EQUALS', 'DIFF', 'MENOR', 'MAIOR', 'MENOREQUALS', 'MAIOREQUALS', 'SUMEQUALS', 'MINUSEQUALS', 'TIMESEQUALS', 'DIVIDEEQUALS', 'MOD'
-]
+    'IDENTIFIER', 'CONSTANT', 'OPERATOR', 'DELIMITER', 'COMMENT', 'STRING',
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN', 'EQUALS', 'DIFF',
+    'LT', 'GT', 'LTE', 'GTE', 'SEMICOLON'
+] + list(keywords.values())
 
-# Tokens específicos
+# Tokens
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+t_ASSIGN = r'='
+t_EQUALS = r'=='
+t_DIFF = r'!='
+t_LT = r'<'
+t_GT = r'>'
+t_LTE = r'<='
+t_GTE = r'>='
+t_SEMICOLON = r';'
+
+t_ignore = ' \t'
+
+# Delimitadores e operadores
 t_OPERATOR = r'\+|\-|\*|\/|==|!='
-t_DELIMITER = r'\;|\,|\{|\}|\(|\)'
-t_CONSTANT = r'\d+(\.\d+)?'
-t_ignore_COMMENT = r'//.*|/\*[\s\S]*?\*/'
+t_DELIMITER = r'\;|\,|\{|\}|\(|\)|\[|\]'
 
-t_ignore 		= ' \t'
-
-t_RPAREN		= r'\)'
-t_LPAREN		= r'\('
-
-
-t_RCOLC			= r'\]'
-t_LCOLC			= r'\['
-t_RBRACE		= r'\}'
-t_LBRACE		= r'\{'
-
-t_COMMA			= r','
-t_SEMICOLON		= r';'
-t_OR 			= r'\|\|'
-t_AND			= r'&&'
-t_EXPLAMATION	= r'!'
-t_INTERROGATION = r'\?'
-t_COLON 		= r':'
-
-
-t_EQUALS		= r'=='
-t_DIFF			= r'!='
-t_MENOR			= r'<'
-t_MAIOR			= r'>'
-t_MENOREQUALS	= r'<='
-t_MAIOREQUALS 	= r'>='
-
-t_SUMEQUALS		= r'\+='
-t_MINUSEQUALS	= r'-='
-t_TIMESEQUALS 	= r'\*='
-t_DIVIDEEQUALS	= r'/='
-t_MOD			= r'%='
-
-t_PLUS   		= r'\+'
-t_MINUS			= r'-'
-t_TIMES			= r'\*'
-t_DIVIDE		= r'/'
-t_ASSIGN		= r'='
-
-def t_IDENTIFIER(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    if t.value in keywords:
-        t.type = 'KEYWORD'
+# Constantes numéricas
+def t_CONSTANT(t):
+    r'\d+(\.\d+)?'
+    if '.' in t.value:
+        t.value = float(t.value)
+    else:
+        t.value = int(t.value)
     return t
 
-def t_NORMALSTRING(t):
-	r'\"([^\\\n]|(\\.))*?\"'
-#	print(t)
-	return t
+# Identificadores e palavras-chave
+def t_IDENTIFIER(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = keywords.get(t.value, 'IDENTIFIER')  # Verifica se é uma palavra-chave
+    return t
 
-def t_NUMBER(t):
-	r'\d+'
-#	print(t)
-	t.value = int(t.value)
-	return t
+# Strings
+def t_STRING(t):
+    r'"([^\\\n]|(\\.))*?"'
+    t.value = t.value[1:-1]  # Remove aspas da string
+    return t
 
-# Define a rule so we can track line numbers
+# Comentários
+def t_COMMENT(t):
+    r'//.*|/\*[\s\S]*?\*/'
+    pass  # Ignora comentários
+
+# Linha nova
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-def t_COMMENT_MONOLINE(t):
-    r'//.*'
-    pass
-    # No return value. Token discarded
-
-def t_ccode_comment(t):
-    r'(/\*(.|\n)*?\*/)|(//.*)'
-    pass
-
+# Erros
 def t_error(t):
-    if t:
-        print(f"Caractere inválido: {t.value[0]}")
-        t.lexer.skip(1)
+    print(f"Caractere inválido: {t.value[0]}")
+    t.lexer.skip(1)
 
+# Constrói o lexer
 lexer = lex.lex()
