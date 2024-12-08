@@ -1,170 +1,132 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    BREAK
-    COMMENT
-    DELIMITER
-    DIFF
-    ELSE
-    EQUALS
-    FALSE
-    FOR
-    GT
-    GTE
-    IDENTIFIER
-    LT
-    LTE
-    OPERATOR
-    READ
-    RETURN
-    TRUE
-    WRITE
-
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> statement_list
-Rule 2     statement_list -> statement
-Rule 3     statement_list -> statement_list statement
-Rule 4     statement -> var_declaration
-Rule 5     statement -> if_statement
-Rule 6     statement -> while_statement
-Rule 7     statement -> function_definition
-Rule 8     statement -> function_call
-Rule 9     statement -> assignment
-Rule 10    var_declaration -> type NAME SEMICOLON
-Rule 11    type -> INT
-Rule 12    type -> BOOL
-Rule 13    type -> STRING
-Rule 14    if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-Rule 15    while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-Rule 16    function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-Rule 17    param_list -> param
-Rule 18    param_list -> param_list COMMA param
-Rule 19    param_list -> empty
-Rule 20    param -> type NAME
-Rule 21    function_call -> NAME LPAREN arg_list RPAREN SEMICOLON
-Rule 22    arg_list -> expression
-Rule 23    arg_list -> arg_list COMMA expression
-Rule 24    arg_list -> empty
-Rule 25    assignment -> NAME ASSIGN expression SEMICOLON
-Rule 26    expression -> NAME
-Rule 27    expression -> CONSTANT
-Rule 28    expression -> FLOAT
-Rule 29    expression -> expression PLUS expression
-Rule 30    expression -> expression MINUS expression
-Rule 31    expression -> expression TIMES expression
-Rule 32    expression -> expression DIVIDE expression
-Rule 33    expression -> expression MOD expression
-Rule 34    expression -> expression AND expression
-Rule 35    expression -> expression OR expression
-Rule 36    expression -> LPAREN expression RPAREN
-Rule 37    empty -> <empty>
+Rule 1     program -> function
+Rule 2     program -> statements
+Rule 3     function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R
+Rule 4     params -> VARIABLE
+Rule 5     params -> VARIABLE COMMA params
+Rule 6     params -> empty
+Rule 7     statements -> statement
+Rule 8     statements -> statement statements
+Rule 9     statement -> expression NEWLINE
+Rule 10    statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+Rule 11    statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+Rule 12    statement -> BREAK
+Rule 13    statement -> RETURN expression
+Rule 14    statement -> VARIABLE ASSIGN expression
+Rule 15    expression -> term
+Rule 16    expression -> expression PLUS term
+Rule 17    expression -> expression MINUS term
+Rule 18    expression -> comparison
+Rule 19    comparison -> expression GREATER term
+Rule 20    comparison -> expression LESS term
+Rule 21    comparison -> expression GREATER_EQUAL term
+Rule 22    comparison -> expression LESS_EQUAL term
+Rule 23    comparison -> expression EQUAL term
+Rule 24    term -> factor
+Rule 25    term -> term TIMES factor
+Rule 26    term -> term DIVIDE factor
+Rule 27    factor -> NUMBER
+Rule 28    factor -> VARIABLE
+Rule 29    factor -> PARENTHESIS_L expression PARENTHESIS_R
+Rule 30    factor -> STRING
+Rule 31    empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 34
-ASSIGN               : 25
-BOOL                 : 12
-BREAK                : 
-COMMA                : 18 23
-COMMENT              : 
-CONSTANT             : 27
-DELIMITER            : 
-DIFF                 : 
-DIVIDE               : 32
-ELSE                 : 
-EQUALS               : 
-FALSE                : 
-FLOAT                : 28
-FOR                  : 
-GT                   : 
-GTE                  : 
-IDENTIFIER           : 
-IF                   : 14
-INT                  : 11
-LBRACE               : 14 15 16
-LPAREN               : 14 15 16 21 36
-LT                   : 
-LTE                  : 
-MINUS                : 30
-MOD                  : 33
-NAME                 : 10 16 20 21 25 26
-OPERATOR             : 
-OR                   : 35
-PLUS                 : 29
-RBRACE               : 14 15 16
-READ                 : 
-RETURN               : 
-RPAREN               : 14 15 16 21 36
-SEMICOLON            : 10 21 25
-STRING               : 13
-TIMES                : 31
-TRUE                 : 
-WHILE                : 15
-WRITE                : 
+ASSIGN               : 14
+BRACE_L              : 3 10 11
+BRACE_R              : 3 10 11
+BREAK                : 12
+COMMA                : 5
+DIVIDE               : 26
+EQUAL                : 23
+FUNCTION             : 3
+GREATER              : 19
+GREATER_EQUAL        : 21
+IF                   : 11
+LESS                 : 20
+LESS_EQUAL           : 22
+MINUS                : 17
+NEWLINE              : 9
+NUMBER               : 27
+PARENTHESIS_L        : 3 10 11 29
+PARENTHESIS_R        : 3 10 11 29
+PLUS                 : 16
+RETURN               : 13
+STRING               : 30
+TIMES                : 25
+VARIABLE             : 3 4 5 14 28
+WHILE                : 10
 error                : 
 
 Nonterminals, with rules where they appear
 
-arg_list             : 21 23
-assignment           : 9
-empty                : 19 24
-expression           : 14 15 22 23 25 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36
-function_call        : 8
-function_definition  : 7
-if_statement         : 5
-param                : 17 18
-param_list           : 16 18
+comparison           : 18
+empty                : 6
+expression           : 9 10 11 13 14 16 17 19 20 21 22 23 29
+factor               : 24 25 26
+function             : 1
+params               : 3 5
 program              : 0
-statement            : 2 3
-statement_list       : 1 3 14 15 16
-type                 : 10 16 20
-var_declaration      : 4
-while_statement      : 6
+statement            : 7 8
+statements           : 2 3 8 10 11
+term                 : 15 16 17 19 20 21 22 23 25 26
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . statement_list
-    (2) statement_list -> . statement
-    (3) statement_list -> . statement_list statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (1) program -> . function
+    (2) program -> . statements
+    (3) function -> . FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R
+    (7) statements -> . statement
+    (8) statements -> . statement statements
+    (9) statement -> . expression NEWLINE
+    (10) statement -> . WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (11) statement -> . IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (12) statement -> . BREAK
+    (13) statement -> . RETURN expression
+    (14) statement -> . VARIABLE ASSIGN expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    FUNCTION        shift and go to state 4
+    WHILE           shift and go to state 9
+    IF              shift and go to state 10
+    BREAK           shift and go to state 11
+    RETURN          shift and go to state 12
+    VARIABLE        shift and go to state 5
+    NUMBER          shift and go to state 16
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
     program                        shift and go to state 1
-    statement_list                 shift and go to state 2
-    statement                      shift and go to state 3
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
+    function                       shift and go to state 2
+    statements                     shift and go to state 3
+    statement                      shift and go to state 7
+    expression                     shift and go to state 8
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 1
 
@@ -174,1454 +136,1321 @@ state 1
 
 state 2
 
-    (1) program -> statement_list .
-    (3) statement_list -> statement_list . statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (1) program -> function .
 
-    $end            reduce using rule 1 (program -> statement_list .)
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    $end            reduce using rule 1 (program -> function .)
 
-    statement                      shift and go to state 17
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
 
 state 3
 
-    (2) statement_list -> statement .
+    (2) program -> statements .
 
-    IF              reduce using rule 2 (statement_list -> statement .)
-    WHILE           reduce using rule 2 (statement_list -> statement .)
-    NAME            reduce using rule 2 (statement_list -> statement .)
-    INT             reduce using rule 2 (statement_list -> statement .)
-    BOOL            reduce using rule 2 (statement_list -> statement .)
-    STRING          reduce using rule 2 (statement_list -> statement .)
-    $end            reduce using rule 2 (statement_list -> statement .)
-    RBRACE          reduce using rule 2 (statement_list -> statement .)
+    $end            reduce using rule 2 (program -> statements .)
 
 
 state 4
 
-    (4) statement -> var_declaration .
+    (3) function -> FUNCTION . VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R
 
-    IF              reduce using rule 4 (statement -> var_declaration .)
-    WHILE           reduce using rule 4 (statement -> var_declaration .)
-    NAME            reduce using rule 4 (statement -> var_declaration .)
-    INT             reduce using rule 4 (statement -> var_declaration .)
-    BOOL            reduce using rule 4 (statement -> var_declaration .)
-    STRING          reduce using rule 4 (statement -> var_declaration .)
-    $end            reduce using rule 4 (statement -> var_declaration .)
-    RBRACE          reduce using rule 4 (statement -> var_declaration .)
+    VARIABLE        shift and go to state 18
 
 
 state 5
 
-    (5) statement -> if_statement .
+    (14) statement -> VARIABLE . ASSIGN expression
+    (28) factor -> VARIABLE .
 
-    IF              reduce using rule 5 (statement -> if_statement .)
-    WHILE           reduce using rule 5 (statement -> if_statement .)
-    NAME            reduce using rule 5 (statement -> if_statement .)
-    INT             reduce using rule 5 (statement -> if_statement .)
-    BOOL            reduce using rule 5 (statement -> if_statement .)
-    STRING          reduce using rule 5 (statement -> if_statement .)
-    $end            reduce using rule 5 (statement -> if_statement .)
-    RBRACE          reduce using rule 5 (statement -> if_statement .)
+    ASSIGN          shift and go to state 19
+    TIMES           reduce using rule 28 (factor -> VARIABLE .)
+    DIVIDE          reduce using rule 28 (factor -> VARIABLE .)
+    NEWLINE         reduce using rule 28 (factor -> VARIABLE .)
+    PLUS            reduce using rule 28 (factor -> VARIABLE .)
+    MINUS           reduce using rule 28 (factor -> VARIABLE .)
+    GREATER         reduce using rule 28 (factor -> VARIABLE .)
+    LESS            reduce using rule 28 (factor -> VARIABLE .)
+    GREATER_EQUAL   reduce using rule 28 (factor -> VARIABLE .)
+    LESS_EQUAL      reduce using rule 28 (factor -> VARIABLE .)
+    EQUAL           reduce using rule 28 (factor -> VARIABLE .)
 
 
 state 6
 
-    (6) statement -> while_statement .
+    (29) factor -> PARENTHESIS_L . expression PARENTHESIS_R
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    IF              reduce using rule 6 (statement -> while_statement .)
-    WHILE           reduce using rule 6 (statement -> while_statement .)
-    NAME            reduce using rule 6 (statement -> while_statement .)
-    INT             reduce using rule 6 (statement -> while_statement .)
-    BOOL            reduce using rule 6 (statement -> while_statement .)
-    STRING          reduce using rule 6 (statement -> while_statement .)
-    $end            reduce using rule 6 (statement -> while_statement .)
-    RBRACE          reduce using rule 6 (statement -> while_statement .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    expression                     shift and go to state 20
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 7
 
-    (7) statement -> function_definition .
+    (7) statements -> statement .
+    (8) statements -> statement . statements
+    (7) statements -> . statement
+    (8) statements -> . statement statements
+    (9) statement -> . expression NEWLINE
+    (10) statement -> . WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (11) statement -> . IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (12) statement -> . BREAK
+    (13) statement -> . RETURN expression
+    (14) statement -> . VARIABLE ASSIGN expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    IF              reduce using rule 7 (statement -> function_definition .)
-    WHILE           reduce using rule 7 (statement -> function_definition .)
-    NAME            reduce using rule 7 (statement -> function_definition .)
-    INT             reduce using rule 7 (statement -> function_definition .)
-    BOOL            reduce using rule 7 (statement -> function_definition .)
-    STRING          reduce using rule 7 (statement -> function_definition .)
-    $end            reduce using rule 7 (statement -> function_definition .)
-    RBRACE          reduce using rule 7 (statement -> function_definition .)
+    $end            reduce using rule 7 (statements -> statement .)
+    BRACE_R         reduce using rule 7 (statements -> statement .)
+    WHILE           shift and go to state 9
+    IF              shift and go to state 10
+    BREAK           shift and go to state 11
+    RETURN          shift and go to state 12
+    VARIABLE        shift and go to state 5
+    NUMBER          shift and go to state 16
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    statement                      shift and go to state 7
+    statements                     shift and go to state 22
+    expression                     shift and go to state 8
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 8
 
-    (8) statement -> function_call .
+    (9) statement -> expression . NEWLINE
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    IF              reduce using rule 8 (statement -> function_call .)
-    WHILE           reduce using rule 8 (statement -> function_call .)
-    NAME            reduce using rule 8 (statement -> function_call .)
-    INT             reduce using rule 8 (statement -> function_call .)
-    BOOL            reduce using rule 8 (statement -> function_call .)
-    STRING          reduce using rule 8 (statement -> function_call .)
-    $end            reduce using rule 8 (statement -> function_call .)
-    RBRACE          reduce using rule 8 (statement -> function_call .)
+    NEWLINE         shift and go to state 23
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
 
 state 9
 
-    (9) statement -> assignment .
+    (10) statement -> WHILE . PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
 
-    IF              reduce using rule 9 (statement -> assignment .)
-    WHILE           reduce using rule 9 (statement -> assignment .)
-    NAME            reduce using rule 9 (statement -> assignment .)
-    INT             reduce using rule 9 (statement -> assignment .)
-    BOOL            reduce using rule 9 (statement -> assignment .)
-    STRING          reduce using rule 9 (statement -> assignment .)
-    $end            reduce using rule 9 (statement -> assignment .)
-    RBRACE          reduce using rule 9 (statement -> assignment .)
+    PARENTHESIS_L   shift and go to state 31
 
 
 state 10
 
-    (10) var_declaration -> type . NAME SEMICOLON
-    (16) function_definition -> type . NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
+    (11) statement -> IF . PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
 
-    NAME            shift and go to state 18
+    PARENTHESIS_L   shift and go to state 32
 
 
 state 11
 
-    (21) function_call -> NAME . LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> NAME . ASSIGN expression SEMICOLON
+    (12) statement -> BREAK .
 
-    LPAREN          shift and go to state 19
-    ASSIGN          shift and go to state 20
+    WHILE           reduce using rule 12 (statement -> BREAK .)
+    IF              reduce using rule 12 (statement -> BREAK .)
+    BREAK           reduce using rule 12 (statement -> BREAK .)
+    RETURN          reduce using rule 12 (statement -> BREAK .)
+    VARIABLE        reduce using rule 12 (statement -> BREAK .)
+    NUMBER          reduce using rule 12 (statement -> BREAK .)
+    PARENTHESIS_L   reduce using rule 12 (statement -> BREAK .)
+    STRING          reduce using rule 12 (statement -> BREAK .)
+    $end            reduce using rule 12 (statement -> BREAK .)
+    BRACE_R         reduce using rule 12 (statement -> BREAK .)
 
 
 state 12
 
-    (14) if_statement -> IF . LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (13) statement -> RETURN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    LPAREN          shift and go to state 21
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    expression                     shift and go to state 33
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 13
 
-    (15) while_statement -> WHILE . LPAREN expression RPAREN LBRACE statement_list RBRACE
+    (15) expression -> term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    LPAREN          shift and go to state 22
+    NEWLINE         reduce using rule 15 (expression -> term .)
+    PLUS            reduce using rule 15 (expression -> term .)
+    MINUS           reduce using rule 15 (expression -> term .)
+    GREATER         reduce using rule 15 (expression -> term .)
+    LESS            reduce using rule 15 (expression -> term .)
+    GREATER_EQUAL   reduce using rule 15 (expression -> term .)
+    LESS_EQUAL      reduce using rule 15 (expression -> term .)
+    EQUAL           reduce using rule 15 (expression -> term .)
+    PARENTHESIS_R   reduce using rule 15 (expression -> term .)
+    WHILE           reduce using rule 15 (expression -> term .)
+    IF              reduce using rule 15 (expression -> term .)
+    BREAK           reduce using rule 15 (expression -> term .)
+    RETURN          reduce using rule 15 (expression -> term .)
+    VARIABLE        reduce using rule 15 (expression -> term .)
+    NUMBER          reduce using rule 15 (expression -> term .)
+    PARENTHESIS_L   reduce using rule 15 (expression -> term .)
+    STRING          reduce using rule 15 (expression -> term .)
+    $end            reduce using rule 15 (expression -> term .)
+    BRACE_R         reduce using rule 15 (expression -> term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 14
 
-    (11) type -> INT .
+    (18) expression -> comparison .
 
-    NAME            reduce using rule 11 (type -> INT .)
+    NEWLINE         reduce using rule 18 (expression -> comparison .)
+    PLUS            reduce using rule 18 (expression -> comparison .)
+    MINUS           reduce using rule 18 (expression -> comparison .)
+    GREATER         reduce using rule 18 (expression -> comparison .)
+    LESS            reduce using rule 18 (expression -> comparison .)
+    GREATER_EQUAL   reduce using rule 18 (expression -> comparison .)
+    LESS_EQUAL      reduce using rule 18 (expression -> comparison .)
+    EQUAL           reduce using rule 18 (expression -> comparison .)
+    PARENTHESIS_R   reduce using rule 18 (expression -> comparison .)
+    WHILE           reduce using rule 18 (expression -> comparison .)
+    IF              reduce using rule 18 (expression -> comparison .)
+    BREAK           reduce using rule 18 (expression -> comparison .)
+    RETURN          reduce using rule 18 (expression -> comparison .)
+    VARIABLE        reduce using rule 18 (expression -> comparison .)
+    NUMBER          reduce using rule 18 (expression -> comparison .)
+    PARENTHESIS_L   reduce using rule 18 (expression -> comparison .)
+    STRING          reduce using rule 18 (expression -> comparison .)
+    $end            reduce using rule 18 (expression -> comparison .)
+    BRACE_R         reduce using rule 18 (expression -> comparison .)
 
 
 state 15
 
-    (12) type -> BOOL .
+    (24) term -> factor .
 
-    NAME            reduce using rule 12 (type -> BOOL .)
+    TIMES           reduce using rule 24 (term -> factor .)
+    DIVIDE          reduce using rule 24 (term -> factor .)
+    NEWLINE         reduce using rule 24 (term -> factor .)
+    PLUS            reduce using rule 24 (term -> factor .)
+    MINUS           reduce using rule 24 (term -> factor .)
+    GREATER         reduce using rule 24 (term -> factor .)
+    LESS            reduce using rule 24 (term -> factor .)
+    GREATER_EQUAL   reduce using rule 24 (term -> factor .)
+    LESS_EQUAL      reduce using rule 24 (term -> factor .)
+    EQUAL           reduce using rule 24 (term -> factor .)
+    PARENTHESIS_R   reduce using rule 24 (term -> factor .)
+    WHILE           reduce using rule 24 (term -> factor .)
+    IF              reduce using rule 24 (term -> factor .)
+    BREAK           reduce using rule 24 (term -> factor .)
+    RETURN          reduce using rule 24 (term -> factor .)
+    VARIABLE        reduce using rule 24 (term -> factor .)
+    NUMBER          reduce using rule 24 (term -> factor .)
+    PARENTHESIS_L   reduce using rule 24 (term -> factor .)
+    STRING          reduce using rule 24 (term -> factor .)
+    $end            reduce using rule 24 (term -> factor .)
+    BRACE_R         reduce using rule 24 (term -> factor .)
 
 
 state 16
 
-    (13) type -> STRING .
+    (27) factor -> NUMBER .
 
-    NAME            reduce using rule 13 (type -> STRING .)
+    TIMES           reduce using rule 27 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 27 (factor -> NUMBER .)
+    NEWLINE         reduce using rule 27 (factor -> NUMBER .)
+    PLUS            reduce using rule 27 (factor -> NUMBER .)
+    MINUS           reduce using rule 27 (factor -> NUMBER .)
+    GREATER         reduce using rule 27 (factor -> NUMBER .)
+    LESS            reduce using rule 27 (factor -> NUMBER .)
+    GREATER_EQUAL   reduce using rule 27 (factor -> NUMBER .)
+    LESS_EQUAL      reduce using rule 27 (factor -> NUMBER .)
+    EQUAL           reduce using rule 27 (factor -> NUMBER .)
+    PARENTHESIS_R   reduce using rule 27 (factor -> NUMBER .)
+    WHILE           reduce using rule 27 (factor -> NUMBER .)
+    IF              reduce using rule 27 (factor -> NUMBER .)
+    BREAK           reduce using rule 27 (factor -> NUMBER .)
+    RETURN          reduce using rule 27 (factor -> NUMBER .)
+    VARIABLE        reduce using rule 27 (factor -> NUMBER .)
+    NUMBER          reduce using rule 27 (factor -> NUMBER .)
+    PARENTHESIS_L   reduce using rule 27 (factor -> NUMBER .)
+    STRING          reduce using rule 27 (factor -> NUMBER .)
+    $end            reduce using rule 27 (factor -> NUMBER .)
+    BRACE_R         reduce using rule 27 (factor -> NUMBER .)
 
 
 state 17
 
-    (3) statement_list -> statement_list statement .
+    (30) factor -> STRING .
 
-    IF              reduce using rule 3 (statement_list -> statement_list statement .)
-    WHILE           reduce using rule 3 (statement_list -> statement_list statement .)
-    NAME            reduce using rule 3 (statement_list -> statement_list statement .)
-    INT             reduce using rule 3 (statement_list -> statement_list statement .)
-    BOOL            reduce using rule 3 (statement_list -> statement_list statement .)
-    STRING          reduce using rule 3 (statement_list -> statement_list statement .)
-    $end            reduce using rule 3 (statement_list -> statement_list statement .)
-    RBRACE          reduce using rule 3 (statement_list -> statement_list statement .)
+    TIMES           reduce using rule 30 (factor -> STRING .)
+    DIVIDE          reduce using rule 30 (factor -> STRING .)
+    NEWLINE         reduce using rule 30 (factor -> STRING .)
+    PLUS            reduce using rule 30 (factor -> STRING .)
+    MINUS           reduce using rule 30 (factor -> STRING .)
+    GREATER         reduce using rule 30 (factor -> STRING .)
+    LESS            reduce using rule 30 (factor -> STRING .)
+    GREATER_EQUAL   reduce using rule 30 (factor -> STRING .)
+    LESS_EQUAL      reduce using rule 30 (factor -> STRING .)
+    EQUAL           reduce using rule 30 (factor -> STRING .)
+    PARENTHESIS_R   reduce using rule 30 (factor -> STRING .)
+    WHILE           reduce using rule 30 (factor -> STRING .)
+    IF              reduce using rule 30 (factor -> STRING .)
+    BREAK           reduce using rule 30 (factor -> STRING .)
+    RETURN          reduce using rule 30 (factor -> STRING .)
+    VARIABLE        reduce using rule 30 (factor -> STRING .)
+    NUMBER          reduce using rule 30 (factor -> STRING .)
+    PARENTHESIS_L   reduce using rule 30 (factor -> STRING .)
+    STRING          reduce using rule 30 (factor -> STRING .)
+    $end            reduce using rule 30 (factor -> STRING .)
+    BRACE_R         reduce using rule 30 (factor -> STRING .)
 
 
 state 18
 
-    (10) var_declaration -> type NAME . SEMICOLON
-    (16) function_definition -> type NAME . LPAREN param_list RPAREN LBRACE statement_list RBRACE
+    (3) function -> FUNCTION VARIABLE . PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R
 
-    SEMICOLON       shift and go to state 23
-    LPAREN          shift and go to state 24
+    PARENTHESIS_L   shift and go to state 36
 
 
 state 19
 
-    (21) function_call -> NAME LPAREN . arg_list RPAREN SEMICOLON
-    (22) arg_list -> . expression
-    (23) arg_list -> . arg_list COMMA expression
-    (24) arg_list -> . empty
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
-    (37) empty -> .
+    (14) statement -> VARIABLE ASSIGN . expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
-    RPAREN          reduce using rule 37 (empty -> .)
-    COMMA           reduce using rule 37 (empty -> .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
-    arg_list                       shift and go to state 27
-    expression                     shift and go to state 28
-    empty                          shift and go to state 29
+    expression                     shift and go to state 37
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 20
 
-    (25) assignment -> NAME ASSIGN . expression SEMICOLON
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (29) factor -> PARENTHESIS_L expression . PARENTHESIS_R
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    PARENTHESIS_R   shift and go to state 38
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
-    expression                     shift and go to state 32
 
 state 21
 
-    (14) if_statement -> IF LPAREN . expression RPAREN LBRACE statement_list RBRACE
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (28) factor -> VARIABLE .
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    TIMES           reduce using rule 28 (factor -> VARIABLE .)
+    DIVIDE          reduce using rule 28 (factor -> VARIABLE .)
+    PARENTHESIS_R   reduce using rule 28 (factor -> VARIABLE .)
+    PLUS            reduce using rule 28 (factor -> VARIABLE .)
+    MINUS           reduce using rule 28 (factor -> VARIABLE .)
+    GREATER         reduce using rule 28 (factor -> VARIABLE .)
+    LESS            reduce using rule 28 (factor -> VARIABLE .)
+    GREATER_EQUAL   reduce using rule 28 (factor -> VARIABLE .)
+    LESS_EQUAL      reduce using rule 28 (factor -> VARIABLE .)
+    EQUAL           reduce using rule 28 (factor -> VARIABLE .)
+    WHILE           reduce using rule 28 (factor -> VARIABLE .)
+    IF              reduce using rule 28 (factor -> VARIABLE .)
+    BREAK           reduce using rule 28 (factor -> VARIABLE .)
+    RETURN          reduce using rule 28 (factor -> VARIABLE .)
+    VARIABLE        reduce using rule 28 (factor -> VARIABLE .)
+    NUMBER          reduce using rule 28 (factor -> VARIABLE .)
+    PARENTHESIS_L   reduce using rule 28 (factor -> VARIABLE .)
+    STRING          reduce using rule 28 (factor -> VARIABLE .)
+    $end            reduce using rule 28 (factor -> VARIABLE .)
+    BRACE_R         reduce using rule 28 (factor -> VARIABLE .)
+    NEWLINE         reduce using rule 28 (factor -> VARIABLE .)
 
-    expression                     shift and go to state 33
 
 state 22
 
-    (15) while_statement -> WHILE LPAREN . expression RPAREN LBRACE statement_list RBRACE
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (8) statements -> statement statements .
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    $end            reduce using rule 8 (statements -> statement statements .)
+    BRACE_R         reduce using rule 8 (statements -> statement statements .)
 
-    expression                     shift and go to state 34
 
 state 23
 
-    (10) var_declaration -> type NAME SEMICOLON .
+    (9) statement -> expression NEWLINE .
 
-    IF              reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    WHILE           reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    NAME            reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    INT             reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    BOOL            reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    STRING          reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    $end            reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
-    RBRACE          reduce using rule 10 (var_declaration -> type NAME SEMICOLON .)
+    WHILE           reduce using rule 9 (statement -> expression NEWLINE .)
+    IF              reduce using rule 9 (statement -> expression NEWLINE .)
+    BREAK           reduce using rule 9 (statement -> expression NEWLINE .)
+    RETURN          reduce using rule 9 (statement -> expression NEWLINE .)
+    VARIABLE        reduce using rule 9 (statement -> expression NEWLINE .)
+    NUMBER          reduce using rule 9 (statement -> expression NEWLINE .)
+    PARENTHESIS_L   reduce using rule 9 (statement -> expression NEWLINE .)
+    STRING          reduce using rule 9 (statement -> expression NEWLINE .)
+    $end            reduce using rule 9 (statement -> expression NEWLINE .)
+    BRACE_R         reduce using rule 9 (statement -> expression NEWLINE .)
 
 
 state 24
 
-    (16) function_definition -> type NAME LPAREN . param_list RPAREN LBRACE statement_list RBRACE
-    (17) param_list -> . param
-    (18) param_list -> . param_list COMMA param
-    (19) param_list -> . empty
-    (20) param -> . type NAME
-    (37) empty -> .
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (16) expression -> expression PLUS . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          reduce using rule 37 (empty -> .)
-    COMMA           reduce using rule 37 (empty -> .)
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
-    type                           shift and go to state 35
-    param_list                     shift and go to state 36
-    param                          shift and go to state 37
-    empty                          shift and go to state 38
+    term                           shift and go to state 39
+    factor                         shift and go to state 15
 
 state 25
 
-    (26) expression -> NAME .
+    (17) expression -> expression MINUS . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    PLUS            reduce using rule 26 (expression -> NAME .)
-    MINUS           reduce using rule 26 (expression -> NAME .)
-    TIMES           reduce using rule 26 (expression -> NAME .)
-    DIVIDE          reduce using rule 26 (expression -> NAME .)
-    MOD             reduce using rule 26 (expression -> NAME .)
-    AND             reduce using rule 26 (expression -> NAME .)
-    OR              reduce using rule 26 (expression -> NAME .)
-    RPAREN          reduce using rule 26 (expression -> NAME .)
-    COMMA           reduce using rule 26 (expression -> NAME .)
-    SEMICOLON       reduce using rule 26 (expression -> NAME .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    term                           shift and go to state 40
+    factor                         shift and go to state 15
 
 state 26
 
-    (36) expression -> LPAREN . expression RPAREN
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (19) comparison -> expression GREATER . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
-    expression                     shift and go to state 39
+    term                           shift and go to state 41
+    factor                         shift and go to state 15
 
 state 27
 
-    (21) function_call -> NAME LPAREN arg_list . RPAREN SEMICOLON
-    (23) arg_list -> arg_list . COMMA expression
+    (20) comparison -> expression LESS . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          shift and go to state 40
-    COMMA           shift and go to state 41
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    term                           shift and go to state 42
+    factor                         shift and go to state 15
 
 state 28
 
-    (22) arg_list -> expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (21) comparison -> expression GREATER_EQUAL . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          reduce using rule 22 (arg_list -> expression .)
-    COMMA           reduce using rule 22 (arg_list -> expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    term                           shift and go to state 43
+    factor                         shift and go to state 15
 
 state 29
 
-    (24) arg_list -> empty .
+    (22) comparison -> expression LESS_EQUAL . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          reduce using rule 24 (arg_list -> empty .)
-    COMMA           reduce using rule 24 (arg_list -> empty .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    term                           shift and go to state 44
+    factor                         shift and go to state 15
 
 state 30
 
-    (27) expression -> CONSTANT .
+    (23) comparison -> expression EQUAL . term
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    PLUS            reduce using rule 27 (expression -> CONSTANT .)
-    MINUS           reduce using rule 27 (expression -> CONSTANT .)
-    TIMES           reduce using rule 27 (expression -> CONSTANT .)
-    DIVIDE          reduce using rule 27 (expression -> CONSTANT .)
-    MOD             reduce using rule 27 (expression -> CONSTANT .)
-    AND             reduce using rule 27 (expression -> CONSTANT .)
-    OR              reduce using rule 27 (expression -> CONSTANT .)
-    RPAREN          reduce using rule 27 (expression -> CONSTANT .)
-    COMMA           reduce using rule 27 (expression -> CONSTANT .)
-    SEMICOLON       reduce using rule 27 (expression -> CONSTANT .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    term                           shift and go to state 45
+    factor                         shift and go to state 15
 
 state 31
 
-    (28) expression -> FLOAT .
+    (10) statement -> WHILE PARENTHESIS_L . expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    PLUS            reduce using rule 28 (expression -> FLOAT .)
-    MINUS           reduce using rule 28 (expression -> FLOAT .)
-    TIMES           reduce using rule 28 (expression -> FLOAT .)
-    DIVIDE          reduce using rule 28 (expression -> FLOAT .)
-    MOD             reduce using rule 28 (expression -> FLOAT .)
-    AND             reduce using rule 28 (expression -> FLOAT .)
-    OR              reduce using rule 28 (expression -> FLOAT .)
-    RPAREN          reduce using rule 28 (expression -> FLOAT .)
-    COMMA           reduce using rule 28 (expression -> FLOAT .)
-    SEMICOLON       reduce using rule 28 (expression -> FLOAT .)
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    expression                     shift and go to state 46
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 32
 
-    (25) assignment -> NAME ASSIGN expression . SEMICOLON
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (11) statement -> IF PARENTHESIS_L . expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    SEMICOLON       shift and go to state 49
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    expression                     shift and go to state 47
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 33
 
-    (14) if_statement -> IF LPAREN expression . RPAREN LBRACE statement_list RBRACE
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (13) statement -> RETURN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    RPAREN          shift and go to state 50
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    WHILE           reduce using rule 13 (statement -> RETURN expression .)
+    IF              reduce using rule 13 (statement -> RETURN expression .)
+    BREAK           reduce using rule 13 (statement -> RETURN expression .)
+    RETURN          reduce using rule 13 (statement -> RETURN expression .)
+    VARIABLE        reduce using rule 13 (statement -> RETURN expression .)
+    NUMBER          reduce using rule 13 (statement -> RETURN expression .)
+    PARENTHESIS_L   reduce using rule 13 (statement -> RETURN expression .)
+    STRING          reduce using rule 13 (statement -> RETURN expression .)
+    $end            reduce using rule 13 (statement -> RETURN expression .)
+    BRACE_R         reduce using rule 13 (statement -> RETURN expression .)
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
 
 state 34
 
-    (15) while_statement -> WHILE LPAREN expression . RPAREN LBRACE statement_list RBRACE
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (25) term -> term TIMES . factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          shift and go to state 51
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    factor                         shift and go to state 48
 
 state 35
 
-    (20) param -> type . NAME
+    (26) term -> term DIVIDE . factor
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    NAME            shift and go to state 52
+    NUMBER          shift and go to state 16
+    VARIABLE        shift and go to state 21
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    factor                         shift and go to state 49
 
 state 36
 
-    (16) function_definition -> type NAME LPAREN param_list . RPAREN LBRACE statement_list RBRACE
-    (18) param_list -> param_list . COMMA param
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L . params PARENTHESIS_R BRACE_L statements BRACE_R
+    (4) params -> . VARIABLE
+    (5) params -> . VARIABLE COMMA params
+    (6) params -> . empty
+    (31) empty -> .
 
-    RPAREN          shift and go to state 53
-    COMMA           shift and go to state 54
+    VARIABLE        shift and go to state 50
+    PARENTHESIS_R   reduce using rule 31 (empty -> .)
 
+    params                         shift and go to state 51
+    empty                          shift and go to state 52
 
 state 37
 
-    (17) param_list -> param .
+    (14) statement -> VARIABLE ASSIGN expression .
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    RPAREN          reduce using rule 17 (param_list -> param .)
-    COMMA           reduce using rule 17 (param_list -> param .)
+    WHILE           reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    IF              reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    BREAK           reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    RETURN          reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    VARIABLE        reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    NUMBER          reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    PARENTHESIS_L   reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    STRING          reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    $end            reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    BRACE_R         reduce using rule 14 (statement -> VARIABLE ASSIGN expression .)
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
 
 state 38
 
-    (19) param_list -> empty .
+    (29) factor -> PARENTHESIS_L expression PARENTHESIS_R .
 
-    RPAREN          reduce using rule 19 (param_list -> empty .)
-    COMMA           reduce using rule 19 (param_list -> empty .)
+    TIMES           reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    DIVIDE          reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    NEWLINE         reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    PLUS            reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    MINUS           reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    GREATER         reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    LESS            reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    GREATER_EQUAL   reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    LESS_EQUAL      reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    EQUAL           reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    PARENTHESIS_R   reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    WHILE           reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    IF              reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    BREAK           reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    RETURN          reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    VARIABLE        reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    NUMBER          reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    PARENTHESIS_L   reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    STRING          reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    $end            reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
+    BRACE_R         reduce using rule 29 (factor -> PARENTHESIS_L expression PARENTHESIS_R .)
 
 
 state 39
 
-    (36) expression -> LPAREN expression . RPAREN
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (16) expression -> expression PLUS term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    RPAREN          shift and go to state 55
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    NEWLINE         reduce using rule 16 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 16 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 16 (expression -> expression PLUS term .)
+    GREATER         reduce using rule 16 (expression -> expression PLUS term .)
+    LESS            reduce using rule 16 (expression -> expression PLUS term .)
+    GREATER_EQUAL   reduce using rule 16 (expression -> expression PLUS term .)
+    LESS_EQUAL      reduce using rule 16 (expression -> expression PLUS term .)
+    EQUAL           reduce using rule 16 (expression -> expression PLUS term .)
+    PARENTHESIS_R   reduce using rule 16 (expression -> expression PLUS term .)
+    WHILE           reduce using rule 16 (expression -> expression PLUS term .)
+    IF              reduce using rule 16 (expression -> expression PLUS term .)
+    BREAK           reduce using rule 16 (expression -> expression PLUS term .)
+    RETURN          reduce using rule 16 (expression -> expression PLUS term .)
+    VARIABLE        reduce using rule 16 (expression -> expression PLUS term .)
+    NUMBER          reduce using rule 16 (expression -> expression PLUS term .)
+    PARENTHESIS_L   reduce using rule 16 (expression -> expression PLUS term .)
+    STRING          reduce using rule 16 (expression -> expression PLUS term .)
+    $end            reduce using rule 16 (expression -> expression PLUS term .)
+    BRACE_R         reduce using rule 16 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 40
 
-    (21) function_call -> NAME LPAREN arg_list RPAREN . SEMICOLON
+    (17) expression -> expression MINUS term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    SEMICOLON       shift and go to state 56
+    NEWLINE         reduce using rule 17 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 17 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 17 (expression -> expression MINUS term .)
+    GREATER         reduce using rule 17 (expression -> expression MINUS term .)
+    LESS            reduce using rule 17 (expression -> expression MINUS term .)
+    GREATER_EQUAL   reduce using rule 17 (expression -> expression MINUS term .)
+    LESS_EQUAL      reduce using rule 17 (expression -> expression MINUS term .)
+    EQUAL           reduce using rule 17 (expression -> expression MINUS term .)
+    PARENTHESIS_R   reduce using rule 17 (expression -> expression MINUS term .)
+    WHILE           reduce using rule 17 (expression -> expression MINUS term .)
+    IF              reduce using rule 17 (expression -> expression MINUS term .)
+    BREAK           reduce using rule 17 (expression -> expression MINUS term .)
+    RETURN          reduce using rule 17 (expression -> expression MINUS term .)
+    VARIABLE        reduce using rule 17 (expression -> expression MINUS term .)
+    NUMBER          reduce using rule 17 (expression -> expression MINUS term .)
+    PARENTHESIS_L   reduce using rule 17 (expression -> expression MINUS term .)
+    STRING          reduce using rule 17 (expression -> expression MINUS term .)
+    $end            reduce using rule 17 (expression -> expression MINUS term .)
+    BRACE_R         reduce using rule 17 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 41
 
-    (23) arg_list -> arg_list COMMA . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (19) comparison -> expression GREATER term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NEWLINE         reduce using rule 19 (comparison -> expression GREATER term .)
+    PLUS            reduce using rule 19 (comparison -> expression GREATER term .)
+    MINUS           reduce using rule 19 (comparison -> expression GREATER term .)
+    GREATER         reduce using rule 19 (comparison -> expression GREATER term .)
+    LESS            reduce using rule 19 (comparison -> expression GREATER term .)
+    GREATER_EQUAL   reduce using rule 19 (comparison -> expression GREATER term .)
+    LESS_EQUAL      reduce using rule 19 (comparison -> expression GREATER term .)
+    EQUAL           reduce using rule 19 (comparison -> expression GREATER term .)
+    PARENTHESIS_R   reduce using rule 19 (comparison -> expression GREATER term .)
+    WHILE           reduce using rule 19 (comparison -> expression GREATER term .)
+    IF              reduce using rule 19 (comparison -> expression GREATER term .)
+    BREAK           reduce using rule 19 (comparison -> expression GREATER term .)
+    RETURN          reduce using rule 19 (comparison -> expression GREATER term .)
+    VARIABLE        reduce using rule 19 (comparison -> expression GREATER term .)
+    NUMBER          reduce using rule 19 (comparison -> expression GREATER term .)
+    PARENTHESIS_L   reduce using rule 19 (comparison -> expression GREATER term .)
+    STRING          reduce using rule 19 (comparison -> expression GREATER term .)
+    $end            reduce using rule 19 (comparison -> expression GREATER term .)
+    BRACE_R         reduce using rule 19 (comparison -> expression GREATER term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
-    expression                     shift and go to state 57
 
 state 42
 
-    (29) expression -> expression PLUS . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (20) comparison -> expression LESS term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NEWLINE         reduce using rule 20 (comparison -> expression LESS term .)
+    PLUS            reduce using rule 20 (comparison -> expression LESS term .)
+    MINUS           reduce using rule 20 (comparison -> expression LESS term .)
+    GREATER         reduce using rule 20 (comparison -> expression LESS term .)
+    LESS            reduce using rule 20 (comparison -> expression LESS term .)
+    GREATER_EQUAL   reduce using rule 20 (comparison -> expression LESS term .)
+    LESS_EQUAL      reduce using rule 20 (comparison -> expression LESS term .)
+    EQUAL           reduce using rule 20 (comparison -> expression LESS term .)
+    PARENTHESIS_R   reduce using rule 20 (comparison -> expression LESS term .)
+    WHILE           reduce using rule 20 (comparison -> expression LESS term .)
+    IF              reduce using rule 20 (comparison -> expression LESS term .)
+    BREAK           reduce using rule 20 (comparison -> expression LESS term .)
+    RETURN          reduce using rule 20 (comparison -> expression LESS term .)
+    VARIABLE        reduce using rule 20 (comparison -> expression LESS term .)
+    NUMBER          reduce using rule 20 (comparison -> expression LESS term .)
+    PARENTHESIS_L   reduce using rule 20 (comparison -> expression LESS term .)
+    STRING          reduce using rule 20 (comparison -> expression LESS term .)
+    $end            reduce using rule 20 (comparison -> expression LESS term .)
+    BRACE_R         reduce using rule 20 (comparison -> expression LESS term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
-    expression                     shift and go to state 58
 
 state 43
 
-    (30) expression -> expression MINUS . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (21) comparison -> expression GREATER_EQUAL term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NEWLINE         reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    PLUS            reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    MINUS           reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    GREATER         reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    LESS            reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    GREATER_EQUAL   reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    LESS_EQUAL      reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    EQUAL           reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    PARENTHESIS_R   reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    WHILE           reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    IF              reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    BREAK           reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    RETURN          reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    VARIABLE        reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    NUMBER          reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    PARENTHESIS_L   reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    STRING          reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    $end            reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    BRACE_R         reduce using rule 21 (comparison -> expression GREATER_EQUAL term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
-    expression                     shift and go to state 59
 
 state 44
 
-    (31) expression -> expression TIMES . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (22) comparison -> expression LESS_EQUAL term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NEWLINE         reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    PLUS            reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    MINUS           reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    GREATER         reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    LESS            reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    GREATER_EQUAL   reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    LESS_EQUAL      reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    EQUAL           reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    PARENTHESIS_R   reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    WHILE           reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    IF              reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    BREAK           reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    RETURN          reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    VARIABLE        reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    NUMBER          reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    PARENTHESIS_L   reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    STRING          reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    $end            reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    BRACE_R         reduce using rule 22 (comparison -> expression LESS_EQUAL term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
-    expression                     shift and go to state 60
 
 state 45
 
-    (32) expression -> expression DIVIDE . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (23) comparison -> expression EQUAL term .
+    (25) term -> term . TIMES factor
+    (26) term -> term . DIVIDE factor
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    NEWLINE         reduce using rule 23 (comparison -> expression EQUAL term .)
+    PLUS            reduce using rule 23 (comparison -> expression EQUAL term .)
+    MINUS           reduce using rule 23 (comparison -> expression EQUAL term .)
+    GREATER         reduce using rule 23 (comparison -> expression EQUAL term .)
+    LESS            reduce using rule 23 (comparison -> expression EQUAL term .)
+    GREATER_EQUAL   reduce using rule 23 (comparison -> expression EQUAL term .)
+    LESS_EQUAL      reduce using rule 23 (comparison -> expression EQUAL term .)
+    EQUAL           reduce using rule 23 (comparison -> expression EQUAL term .)
+    PARENTHESIS_R   reduce using rule 23 (comparison -> expression EQUAL term .)
+    WHILE           reduce using rule 23 (comparison -> expression EQUAL term .)
+    IF              reduce using rule 23 (comparison -> expression EQUAL term .)
+    BREAK           reduce using rule 23 (comparison -> expression EQUAL term .)
+    RETURN          reduce using rule 23 (comparison -> expression EQUAL term .)
+    VARIABLE        reduce using rule 23 (comparison -> expression EQUAL term .)
+    NUMBER          reduce using rule 23 (comparison -> expression EQUAL term .)
+    PARENTHESIS_L   reduce using rule 23 (comparison -> expression EQUAL term .)
+    STRING          reduce using rule 23 (comparison -> expression EQUAL term .)
+    $end            reduce using rule 23 (comparison -> expression EQUAL term .)
+    BRACE_R         reduce using rule 23 (comparison -> expression EQUAL term .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
-    expression                     shift and go to state 61
 
 state 46
 
-    (33) expression -> expression MOD . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (10) statement -> WHILE PARENTHESIS_L expression . PARENTHESIS_R BRACE_L statements BRACE_R
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    PARENTHESIS_R   shift and go to state 53
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
-    expression                     shift and go to state 62
 
 state 47
 
-    (34) expression -> expression AND . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (11) statement -> IF PARENTHESIS_L expression . PARENTHESIS_R BRACE_L statements BRACE_R
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (19) comparison -> expression . GREATER term
+    (20) comparison -> expression . LESS term
+    (21) comparison -> expression . GREATER_EQUAL term
+    (22) comparison -> expression . LESS_EQUAL term
+    (23) comparison -> expression . EQUAL term
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    PARENTHESIS_R   shift and go to state 54
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATER         shift and go to state 26
+    LESS            shift and go to state 27
+    GREATER_EQUAL   shift and go to state 28
+    LESS_EQUAL      shift and go to state 29
+    EQUAL           shift and go to state 30
 
-    expression                     shift and go to state 63
 
 state 48
 
-    (35) expression -> expression OR . expression
-    (26) expression -> . NAME
-    (27) expression -> . CONSTANT
-    (28) expression -> . FLOAT
-    (29) expression -> . expression PLUS expression
-    (30) expression -> . expression MINUS expression
-    (31) expression -> . expression TIMES expression
-    (32) expression -> . expression DIVIDE expression
-    (33) expression -> . expression MOD expression
-    (34) expression -> . expression AND expression
-    (35) expression -> . expression OR expression
-    (36) expression -> . LPAREN expression RPAREN
+    (25) term -> term TIMES factor .
 
-    NAME            shift and go to state 25
-    CONSTANT        shift and go to state 30
-    FLOAT           shift and go to state 31
-    LPAREN          shift and go to state 26
+    TIMES           reduce using rule 25 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 25 (term -> term TIMES factor .)
+    NEWLINE         reduce using rule 25 (term -> term TIMES factor .)
+    PLUS            reduce using rule 25 (term -> term TIMES factor .)
+    MINUS           reduce using rule 25 (term -> term TIMES factor .)
+    GREATER         reduce using rule 25 (term -> term TIMES factor .)
+    LESS            reduce using rule 25 (term -> term TIMES factor .)
+    GREATER_EQUAL   reduce using rule 25 (term -> term TIMES factor .)
+    LESS_EQUAL      reduce using rule 25 (term -> term TIMES factor .)
+    EQUAL           reduce using rule 25 (term -> term TIMES factor .)
+    PARENTHESIS_R   reduce using rule 25 (term -> term TIMES factor .)
+    WHILE           reduce using rule 25 (term -> term TIMES factor .)
+    IF              reduce using rule 25 (term -> term TIMES factor .)
+    BREAK           reduce using rule 25 (term -> term TIMES factor .)
+    RETURN          reduce using rule 25 (term -> term TIMES factor .)
+    VARIABLE        reduce using rule 25 (term -> term TIMES factor .)
+    NUMBER          reduce using rule 25 (term -> term TIMES factor .)
+    PARENTHESIS_L   reduce using rule 25 (term -> term TIMES factor .)
+    STRING          reduce using rule 25 (term -> term TIMES factor .)
+    $end            reduce using rule 25 (term -> term TIMES factor .)
+    BRACE_R         reduce using rule 25 (term -> term TIMES factor .)
 
-    expression                     shift and go to state 64
 
 state 49
 
-    (25) assignment -> NAME ASSIGN expression SEMICOLON .
+    (26) term -> term DIVIDE factor .
 
-    IF              reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    WHILE           reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    NAME            reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    INT             reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    BOOL            reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    STRING          reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    $end            reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
-    RBRACE          reduce using rule 25 (assignment -> NAME ASSIGN expression SEMICOLON .)
+    TIMES           reduce using rule 26 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 26 (term -> term DIVIDE factor .)
+    NEWLINE         reduce using rule 26 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 26 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 26 (term -> term DIVIDE factor .)
+    GREATER         reduce using rule 26 (term -> term DIVIDE factor .)
+    LESS            reduce using rule 26 (term -> term DIVIDE factor .)
+    GREATER_EQUAL   reduce using rule 26 (term -> term DIVIDE factor .)
+    LESS_EQUAL      reduce using rule 26 (term -> term DIVIDE factor .)
+    EQUAL           reduce using rule 26 (term -> term DIVIDE factor .)
+    PARENTHESIS_R   reduce using rule 26 (term -> term DIVIDE factor .)
+    WHILE           reduce using rule 26 (term -> term DIVIDE factor .)
+    IF              reduce using rule 26 (term -> term DIVIDE factor .)
+    BREAK           reduce using rule 26 (term -> term DIVIDE factor .)
+    RETURN          reduce using rule 26 (term -> term DIVIDE factor .)
+    VARIABLE        reduce using rule 26 (term -> term DIVIDE factor .)
+    NUMBER          reduce using rule 26 (term -> term DIVIDE factor .)
+    PARENTHESIS_L   reduce using rule 26 (term -> term DIVIDE factor .)
+    STRING          reduce using rule 26 (term -> term DIVIDE factor .)
+    $end            reduce using rule 26 (term -> term DIVIDE factor .)
+    BRACE_R         reduce using rule 26 (term -> term DIVIDE factor .)
 
 
 state 50
 
-    (14) if_statement -> IF LPAREN expression RPAREN . LBRACE statement_list RBRACE
+    (4) params -> VARIABLE .
+    (5) params -> VARIABLE . COMMA params
 
-    LBRACE          shift and go to state 65
+    PARENTHESIS_R   reduce using rule 4 (params -> VARIABLE .)
+    COMMA           shift and go to state 55
 
 
 state 51
 
-    (15) while_statement -> WHILE LPAREN expression RPAREN . LBRACE statement_list RBRACE
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L params . PARENTHESIS_R BRACE_L statements BRACE_R
 
-    LBRACE          shift and go to state 66
+    PARENTHESIS_R   shift and go to state 56
 
 
 state 52
 
-    (20) param -> type NAME .
+    (6) params -> empty .
 
-    RPAREN          reduce using rule 20 (param -> type NAME .)
-    COMMA           reduce using rule 20 (param -> type NAME .)
+    PARENTHESIS_R   reduce using rule 6 (params -> empty .)
 
 
 state 53
 
-    (16) function_definition -> type NAME LPAREN param_list RPAREN . LBRACE statement_list RBRACE
+    (10) statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R . BRACE_L statements BRACE_R
 
-    LBRACE          shift and go to state 67
+    BRACE_L         shift and go to state 57
 
 
 state 54
 
-    (18) param_list -> param_list COMMA . param
-    (20) param -> . type NAME
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (11) statement -> IF PARENTHESIS_L expression PARENTHESIS_R . BRACE_L statements BRACE_R
 
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    BRACE_L         shift and go to state 58
 
-    param                          shift and go to state 68
-    type                           shift and go to state 35
 
 state 55
 
-    (36) expression -> LPAREN expression RPAREN .
+    (5) params -> VARIABLE COMMA . params
+    (4) params -> . VARIABLE
+    (5) params -> . VARIABLE COMMA params
+    (6) params -> . empty
+    (31) empty -> .
 
-    PLUS            reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    TIMES           reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    MOD             reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    AND             reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    OR              reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    COMMA           reduce using rule 36 (expression -> LPAREN expression RPAREN .)
-    SEMICOLON       reduce using rule 36 (expression -> LPAREN expression RPAREN .)
+    VARIABLE        shift and go to state 50
+    PARENTHESIS_R   reduce using rule 31 (empty -> .)
 
+    params                         shift and go to state 59
+    empty                          shift and go to state 52
 
 state 56
 
-    (21) function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R . BRACE_L statements BRACE_R
 
-    IF              reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    WHILE           reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    NAME            reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    INT             reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    BOOL            reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    STRING          reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    $end            reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 21 (function_call -> NAME LPAREN arg_list RPAREN SEMICOLON .)
+    BRACE_L         shift and go to state 60
 
 
 state 57
 
-    (23) arg_list -> arg_list COMMA expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (10) statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L . statements BRACE_R
+    (7) statements -> . statement
+    (8) statements -> . statement statements
+    (9) statement -> . expression NEWLINE
+    (10) statement -> . WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (11) statement -> . IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (12) statement -> . BREAK
+    (13) statement -> . RETURN expression
+    (14) statement -> . VARIABLE ASSIGN expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-    RPAREN          reduce using rule 23 (arg_list -> arg_list COMMA expression .)
-    COMMA           reduce using rule 23 (arg_list -> arg_list COMMA expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    WHILE           shift and go to state 9
+    IF              shift and go to state 10
+    BREAK           shift and go to state 11
+    RETURN          shift and go to state 12
+    VARIABLE        shift and go to state 5
+    NUMBER          shift and go to state 16
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
+    expression                     shift and go to state 8
+    statements                     shift and go to state 61
+    statement                      shift and go to state 7
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 58
 
-    (29) expression -> expression PLUS expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (11) statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L . statements BRACE_R
+    (7) statements -> . statement
+    (8) statements -> . statement statements
+    (9) statement -> . expression NEWLINE
+    (10) statement -> . WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (11) statement -> . IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (12) statement -> . BREAK
+    (13) statement -> . RETURN expression
+    (14) statement -> . VARIABLE ASSIGN expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 29 (expression -> expression PLUS expression .)
-    COMMA           reduce using rule 29 (expression -> expression PLUS expression .)
-    SEMICOLON       reduce using rule 29 (expression -> expression PLUS expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    WHILE           shift and go to state 9
+    IF              shift and go to state 10
+    BREAK           shift and go to state 11
+    RETURN          shift and go to state 12
+    VARIABLE        shift and go to state 5
+    NUMBER          shift and go to state 16
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
-  ! PLUS            [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! MINUS           [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! TIMES           [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! DIVIDE          [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! MOD             [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! AND             [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-  ! OR              [ reduce using rule 29 (expression -> expression PLUS expression .) ]
-
+    expression                     shift and go to state 8
+    statements                     shift and go to state 62
+    statement                      shift and go to state 7
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 59
 
-    (30) expression -> expression MINUS expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (5) params -> VARIABLE COMMA params .
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 30 (expression -> expression MINUS expression .)
-    COMMA           reduce using rule 30 (expression -> expression MINUS expression .)
-    SEMICOLON       reduce using rule 30 (expression -> expression MINUS expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
-
-  ! PLUS            [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! MINUS           [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! TIMES           [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! DIVIDE          [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! MOD             [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! AND             [ reduce using rule 30 (expression -> expression MINUS expression .) ]
-  ! OR              [ reduce using rule 30 (expression -> expression MINUS expression .) ]
+    PARENTHESIS_R   reduce using rule 5 (params -> VARIABLE COMMA params .)
 
 
 state 60
 
-    (31) expression -> expression TIMES expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L . statements BRACE_R
+    (7) statements -> . statement
+    (8) statements -> . statement statements
+    (9) statement -> . expression NEWLINE
+    (10) statement -> . WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (11) statement -> . IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R
+    (12) statement -> . BREAK
+    (13) statement -> . RETURN expression
+    (14) statement -> . VARIABLE ASSIGN expression
+    (15) expression -> . term
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . comparison
+    (24) term -> . factor
+    (25) term -> . term TIMES factor
+    (26) term -> . term DIVIDE factor
+    (19) comparison -> . expression GREATER term
+    (20) comparison -> . expression LESS term
+    (21) comparison -> . expression GREATER_EQUAL term
+    (22) comparison -> . expression LESS_EQUAL term
+    (23) comparison -> . expression EQUAL term
+    (27) factor -> . NUMBER
+    (28) factor -> . VARIABLE
+    (29) factor -> . PARENTHESIS_L expression PARENTHESIS_R
+    (30) factor -> . STRING
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 31 (expression -> expression TIMES expression .)
-    COMMA           reduce using rule 31 (expression -> expression TIMES expression .)
-    SEMICOLON       reduce using rule 31 (expression -> expression TIMES expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
+    WHILE           shift and go to state 9
+    IF              shift and go to state 10
+    BREAK           shift and go to state 11
+    RETURN          shift and go to state 12
+    VARIABLE        shift and go to state 5
+    NUMBER          shift and go to state 16
+    PARENTHESIS_L   shift and go to state 6
+    STRING          shift and go to state 17
 
-  ! PLUS            [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! MINUS           [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! TIMES           [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! DIVIDE          [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! MOD             [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! AND             [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-  ! OR              [ reduce using rule 31 (expression -> expression TIMES expression .) ]
-
+    statements                     shift and go to state 63
+    statement                      shift and go to state 7
+    expression                     shift and go to state 8
+    term                           shift and go to state 13
+    comparison                     shift and go to state 14
+    factor                         shift and go to state 15
 
 state 61
 
-    (32) expression -> expression DIVIDE expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (10) statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements . BRACE_R
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 32 (expression -> expression DIVIDE expression .)
-    COMMA           reduce using rule 32 (expression -> expression DIVIDE expression .)
-    SEMICOLON       reduce using rule 32 (expression -> expression DIVIDE expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
-
-  ! PLUS            [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! MINUS           [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! TIMES           [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! DIVIDE          [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! MOD             [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! AND             [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
-  ! OR              [ reduce using rule 32 (expression -> expression DIVIDE expression .) ]
+    BRACE_R         shift and go to state 64
 
 
 state 62
 
-    (33) expression -> expression MOD expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (11) statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements . BRACE_R
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 33 (expression -> expression MOD expression .)
-    COMMA           reduce using rule 33 (expression -> expression MOD expression .)
-    SEMICOLON       reduce using rule 33 (expression -> expression MOD expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
-
-  ! PLUS            [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! MINUS           [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! TIMES           [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! DIVIDE          [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! MOD             [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! AND             [ reduce using rule 33 (expression -> expression MOD expression .) ]
-  ! OR              [ reduce using rule 33 (expression -> expression MOD expression .) ]
+    BRACE_R         shift and go to state 65
 
 
 state 63
 
-    (34) expression -> expression AND expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements . BRACE_R
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 34 (expression -> expression AND expression .)
-    COMMA           reduce using rule 34 (expression -> expression AND expression .)
-    SEMICOLON       reduce using rule 34 (expression -> expression AND expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
-
-  ! PLUS            [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! MINUS           [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! TIMES           [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! DIVIDE          [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! MOD             [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! AND             [ reduce using rule 34 (expression -> expression AND expression .) ]
-  ! OR              [ reduce using rule 34 (expression -> expression AND expression .) ]
+    BRACE_R         shift and go to state 66
 
 
 state 64
 
-    (35) expression -> expression OR expression .
-    (29) expression -> expression . PLUS expression
-    (30) expression -> expression . MINUS expression
-    (31) expression -> expression . TIMES expression
-    (32) expression -> expression . DIVIDE expression
-    (33) expression -> expression . MOD expression
-    (34) expression -> expression . AND expression
-    (35) expression -> expression . OR expression
+    (10) statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-  ! shift/reduce conflict for DIVIDE resolved as shift
-  ! shift/reduce conflict for MOD resolved as shift
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    RPAREN          reduce using rule 35 (expression -> expression OR expression .)
-    COMMA           reduce using rule 35 (expression -> expression OR expression .)
-    SEMICOLON       reduce using rule 35 (expression -> expression OR expression .)
-    PLUS            shift and go to state 42
-    MINUS           shift and go to state 43
-    TIMES           shift and go to state 44
-    DIVIDE          shift and go to state 45
-    MOD             shift and go to state 46
-    AND             shift and go to state 47
-    OR              shift and go to state 48
-
-  ! PLUS            [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! MINUS           [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! TIMES           [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! DIVIDE          [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! MOD             [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! AND             [ reduce using rule 35 (expression -> expression OR expression .) ]
-  ! OR              [ reduce using rule 35 (expression -> expression OR expression .) ]
+    WHILE           reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    IF              reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    BREAK           reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    RETURN          reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    VARIABLE        reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    NUMBER          reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    PARENTHESIS_L   reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    STRING          reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    $end            reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    BRACE_R         reduce using rule 10 (statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
 
 
 state 65
 
-    (14) if_statement -> IF LPAREN expression RPAREN LBRACE . statement_list RBRACE
-    (2) statement_list -> . statement
-    (3) statement_list -> . statement_list statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (11) statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .
 
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    WHILE           reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    IF              reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    BREAK           reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    RETURN          reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    VARIABLE        reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    NUMBER          reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    PARENTHESIS_L   reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    STRING          reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    $end            reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
+    BRACE_R         reduce using rule 11 (statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R .)
 
-    statement_list                 shift and go to state 69
-    statement                      shift and go to state 3
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
 
 state 66
 
-    (15) while_statement -> WHILE LPAREN expression RPAREN LBRACE . statement_list RBRACE
-    (2) statement_list -> . statement
-    (3) statement_list -> . statement_list statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
+    (3) function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R .
 
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
+    $end            reduce using rule 3 (function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R .)
 
-    statement_list                 shift and go to state 70
-    statement                      shift and go to state 3
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
-
-state 67
-
-    (16) function_definition -> type NAME LPAREN param_list RPAREN LBRACE . statement_list RBRACE
-    (2) statement_list -> . statement
-    (3) statement_list -> . statement_list statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
-
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
-
-    type                           shift and go to state 10
-    statement_list                 shift and go to state 71
-    statement                      shift and go to state 3
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-
-state 68
-
-    (18) param_list -> param_list COMMA param .
-
-    RPAREN          reduce using rule 18 (param_list -> param_list COMMA param .)
-    COMMA           reduce using rule 18 (param_list -> param_list COMMA param .)
-
-
-state 69
-
-    (14) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list . RBRACE
-    (3) statement_list -> statement_list . statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
-
-    RBRACE          shift and go to state 72
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
-
-    statement                      shift and go to state 17
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
-
-state 70
-
-    (15) while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list . RBRACE
-    (3) statement_list -> statement_list . statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
-
-    RBRACE          shift and go to state 73
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
-
-    statement                      shift and go to state 17
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-    type                           shift and go to state 10
-
-state 71
-
-    (16) function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list . RBRACE
-    (3) statement_list -> statement_list . statement
-    (4) statement -> . var_declaration
-    (5) statement -> . if_statement
-    (6) statement -> . while_statement
-    (7) statement -> . function_definition
-    (8) statement -> . function_call
-    (9) statement -> . assignment
-    (10) var_declaration -> . type NAME SEMICOLON
-    (14) if_statement -> . IF LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (15) while_statement -> . WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE
-    (16) function_definition -> . type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE
-    (21) function_call -> . NAME LPAREN arg_list RPAREN SEMICOLON
-    (25) assignment -> . NAME ASSIGN expression SEMICOLON
-    (11) type -> . INT
-    (12) type -> . BOOL
-    (13) type -> . STRING
-
-    RBRACE          shift and go to state 74
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    NAME            shift and go to state 11
-    INT             shift and go to state 14
-    BOOL            shift and go to state 15
-    STRING          shift and go to state 16
-
-    type                           shift and go to state 10
-    statement                      shift and go to state 17
-    var_declaration                shift and go to state 4
-    if_statement                   shift and go to state 5
-    while_statement                shift and go to state 6
-    function_definition            shift and go to state 7
-    function_call                  shift and go to state 8
-    assignment                     shift and go to state 9
-
-state 72
-
-    (14) if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .
-
-    IF              reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    WHILE           reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    NAME            reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    INT             reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    BOOL            reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    STRING          reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    $end            reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    RBRACE          reduce using rule 14 (if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-
-
-state 73
-
-    (15) while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .
-
-    IF              reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    WHILE           reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    NAME            reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    INT             reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    BOOL            reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    STRING          reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    $end            reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-    RBRACE          reduce using rule 15 (while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE .)
-
-
-state 74
-
-    (16) function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .
-
-    IF              reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    WHILE           reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    NAME            reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    INT             reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    BOOL            reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    STRING          reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    $end            reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-    RBRACE          reduce using rule 16 (function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE .)
-
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for PLUS in state 58 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 58 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 58 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 58 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 58 resolved as shift
-WARNING: shift/reduce conflict for AND in state 58 resolved as shift
-WARNING: shift/reduce conflict for OR in state 58 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 59 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 59 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 59 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 59 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 59 resolved as shift
-WARNING: shift/reduce conflict for AND in state 59 resolved as shift
-WARNING: shift/reduce conflict for OR in state 59 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 60 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 60 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 60 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 60 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 60 resolved as shift
-WARNING: shift/reduce conflict for AND in state 60 resolved as shift
-WARNING: shift/reduce conflict for OR in state 60 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 61 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 61 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 61 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 61 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 61 resolved as shift
-WARNING: shift/reduce conflict for AND in state 61 resolved as shift
-WARNING: shift/reduce conflict for OR in state 61 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 62 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 62 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 62 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 62 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 62 resolved as shift
-WARNING: shift/reduce conflict for AND in state 62 resolved as shift
-WARNING: shift/reduce conflict for OR in state 62 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 63 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 63 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 63 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 63 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 63 resolved as shift
-WARNING: shift/reduce conflict for AND in state 63 resolved as shift
-WARNING: shift/reduce conflict for OR in state 63 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 64 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 64 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 64 resolved as shift
-WARNING: shift/reduce conflict for DIVIDE in state 64 resolved as shift
-WARNING: shift/reduce conflict for MOD in state 64 resolved as shift
-WARNING: shift/reduce conflict for AND in state 64 resolved as shift
-WARNING: shift/reduce conflict for OR in state 64 resolved as shift

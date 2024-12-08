@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND ASSIGN BOOL BREAK COMMA COMMENT CONSTANT DELIMITER DIFF DIVIDE ELSE EQUALS FALSE FLOAT FOR GT GTE IDENTIFIER IF INT LBRACE LPAREN LT LTE MINUS MOD NAME OPERATOR OR PLUS RBRACE READ RETURN RPAREN SEMICOLON STRING TIMES TRUE WHILE WRITEprogram : statement_liststatement_list : statement\n                      | statement_list statementstatement : var_declaration\n                 | if_statement\n                 | while_statement\n                 | function_definition\n                 | function_call\n                 | assignmentvar_declaration : type NAME SEMICOLONtype : INT\n            | BOOL\n            | STRINGif_statement : IF LPAREN expression RPAREN LBRACE statement_list RBRACEwhile_statement : WHILE LPAREN expression RPAREN LBRACE statement_list RBRACEfunction_definition : type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACEparam_list : param\n                  | param_list COMMA param\n                  | emptyparam : type NAMEfunction_call : NAME LPAREN arg_list RPAREN SEMICOLONarg_list : expression\n                | arg_list COMMA expression\n                | emptyassignment : NAME ASSIGN expression SEMICOLONexpression : NAME\n                  | CONSTANT\n                  | FLOAT\n                  | expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expression\n                  | expression MOD expression\n                  | expression AND expression\n                  | expression OR expression\n                  | LPAREN expression RPARENempty :'
+_lr_signature = 'ASSIGN BRACE_L BRACE_R BREAK COMMA DIVIDE EQUAL FUNCTION GREATER GREATER_EQUAL IF LESS LESS_EQUAL MINUS NEWLINE NUMBER PARENTHESIS_L PARENTHESIS_R PLUS RETURN STRING TIMES VARIABLE WHILEprogram : function\n               | statementsfunction : FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_Rparams : VARIABLE\n              | VARIABLE COMMA params\n              | emptystatements : statement\n                  | statement statementsstatement : expression NEWLINE\n                 | WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R\n                 | IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R\n                 | BREAK\n                 | RETURN expressionstatement : VARIABLE ASSIGN expressionexpression : term\n                  | expression PLUS term\n                  | expression MINUS term\n                  | comparisoncomparison : expression GREATER term\n                  | expression LESS term\n                  | expression GREATER_EQUAL term\n                  | expression LESS_EQUAL term\n                  | expression EQUAL termterm : factor\n            | term TIMES factor\n            | term DIVIDE factorfactor : NUMBER\n              | VARIABLE\n              | PARENTHESIS_L expression PARENTHESIS_R\n              | STRINGempty :'
     
-_lr_action_items = {'IF':([0,2,3,4,5,6,7,8,9,17,23,49,56,65,66,67,69,70,71,72,73,74,],[12,12,-2,-4,-5,-6,-7,-8,-9,-3,-10,-25,-21,12,12,12,12,12,12,-14,-15,-16,]),'WHILE':([0,2,3,4,5,6,7,8,9,17,23,49,56,65,66,67,69,70,71,72,73,74,],[13,13,-2,-4,-5,-6,-7,-8,-9,-3,-10,-25,-21,13,13,13,13,13,13,-14,-15,-16,]),'NAME':([0,2,3,4,5,6,7,8,9,10,14,15,16,17,19,20,21,22,23,26,35,41,42,43,44,45,46,47,48,49,56,65,66,67,69,70,71,72,73,74,],[11,11,-2,-4,-5,-6,-7,-8,-9,18,-11,-12,-13,-3,25,25,25,25,-10,25,52,25,25,25,25,25,25,25,25,-25,-21,11,11,11,11,11,11,-14,-15,-16,]),'INT':([0,2,3,4,5,6,7,8,9,17,23,24,49,54,56,65,66,67,69,70,71,72,73,74,],[14,14,-2,-4,-5,-6,-7,-8,-9,-3,-10,14,-25,14,-21,14,14,14,14,14,14,-14,-15,-16,]),'BOOL':([0,2,3,4,5,6,7,8,9,17,23,24,49,54,56,65,66,67,69,70,71,72,73,74,],[15,15,-2,-4,-5,-6,-7,-8,-9,-3,-10,15,-25,15,-21,15,15,15,15,15,15,-14,-15,-16,]),'STRING':([0,2,3,4,5,6,7,8,9,17,23,24,49,54,56,65,66,67,69,70,71,72,73,74,],[16,16,-2,-4,-5,-6,-7,-8,-9,-3,-10,16,-25,16,-21,16,16,16,16,16,16,-14,-15,-16,]),'$end':([1,2,3,4,5,6,7,8,9,17,23,49,56,72,73,74,],[0,-1,-2,-4,-5,-6,-7,-8,-9,-3,-10,-25,-21,-14,-15,-16,]),'RBRACE':([3,4,5,6,7,8,9,17,23,49,56,69,70,71,72,73,74,],[-2,-4,-5,-6,-7,-8,-9,-3,-10,-25,-21,72,73,74,-14,-15,-16,]),'LPAREN':([11,12,13,18,19,20,21,22,26,41,42,43,44,45,46,47,48,],[19,21,22,24,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'ASSIGN':([11,],[20,]),'SEMICOLON':([18,25,30,31,32,40,55,58,59,60,61,62,63,64,],[23,-26,-27,-28,49,56,-36,-29,-30,-31,-32,-33,-34,-35,]),'CONSTANT':([19,20,21,22,26,41,42,43,44,45,46,47,48,],[30,30,30,30,30,30,30,30,30,30,30,30,30,]),'FLOAT':([19,20,21,22,26,41,42,43,44,45,46,47,48,],[31,31,31,31,31,31,31,31,31,31,31,31,31,]),'RPAREN':([19,24,25,27,28,29,30,31,33,34,36,37,38,39,52,55,57,58,59,60,61,62,63,64,68,],[-37,-37,-26,40,-22,-24,-27,-28,50,51,53,-17,-19,55,-20,-36,-23,-29,-30,-31,-32,-33,-34,-35,-18,]),'COMMA':([19,24,25,27,28,29,30,31,36,37,38,52,55,57,58,59,60,61,62,63,64,68,],[-37,-37,-26,41,-22,-24,-27,-28,54,-17,-19,-20,-36,-23,-29,-30,-31,-32,-33,-34,-35,-18,]),'PLUS':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,42,-27,-28,42,42,42,42,-36,42,42,42,42,42,42,42,42,]),'MINUS':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,43,-27,-28,43,43,43,43,-36,43,43,43,43,43,43,43,43,]),'TIMES':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,44,-27,-28,44,44,44,44,-36,44,44,44,44,44,44,44,44,]),'DIVIDE':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,45,-27,-28,45,45,45,45,-36,45,45,45,45,45,45,45,45,]),'MOD':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,46,-27,-28,46,46,46,46,-36,46,46,46,46,46,46,46,46,]),'AND':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,47,-27,-28,47,47,47,47,-36,47,47,47,47,47,47,47,47,]),'OR':([25,28,30,31,32,33,34,39,55,57,58,59,60,61,62,63,64,],[-26,48,-27,-28,48,48,48,48,-36,48,48,48,48,48,48,48,48,]),'LBRACE':([50,51,53,],[65,66,67,]),}
+_lr_action_items = {'FUNCTION':([0,],[4,]),'WHILE':([0,7,11,13,14,15,16,17,21,23,33,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[9,9,-12,-15,-18,-24,-27,-30,-28,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,9,9,9,-10,-11,]),'IF':([0,7,11,13,14,15,16,17,21,23,33,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[10,10,-12,-15,-18,-24,-27,-30,-28,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,10,10,10,-10,-11,]),'BREAK':([0,7,11,13,14,15,16,17,21,23,33,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[11,11,-12,-15,-18,-24,-27,-30,-28,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,11,11,11,-10,-11,]),'RETURN':([0,7,11,13,14,15,16,17,21,23,33,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[12,12,-12,-15,-18,-24,-27,-30,-28,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,12,12,12,-10,-11,]),'VARIABLE':([0,4,6,7,11,12,13,14,15,16,17,19,21,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,48,49,55,57,58,60,64,65,],[5,18,21,5,-12,21,-15,-18,-24,-27,-30,21,-28,-9,21,21,21,21,21,21,21,21,21,-13,21,21,50,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,50,5,5,5,-10,-11,]),'NUMBER':([0,6,7,11,12,13,14,15,16,17,19,21,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[16,16,16,-12,16,-15,-18,-24,-27,-30,16,-28,-9,16,16,16,16,16,16,16,16,16,-13,16,16,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,16,16,16,-10,-11,]),'PARENTHESIS_L':([0,6,7,9,10,11,12,13,14,15,16,17,18,19,21,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[6,6,6,31,32,-12,6,-15,-18,-24,-27,-30,36,6,-28,-9,6,6,6,6,6,6,6,6,6,-13,6,6,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,6,6,6,-10,-11,]),'STRING':([0,6,7,11,12,13,14,15,16,17,19,21,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,48,49,57,58,60,64,65,],[17,17,17,-12,17,-15,-18,-24,-27,-30,17,-28,-9,17,17,17,17,17,17,17,17,17,-13,17,17,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,17,17,17,-10,-11,]),'$end':([1,2,3,7,11,13,14,15,16,17,21,22,23,33,37,38,39,40,41,42,43,44,45,48,49,64,65,66,],[0,-1,-2,-7,-12,-15,-18,-24,-27,-30,-28,-8,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,-10,-11,-3,]),'ASSIGN':([5,],[19,]),'TIMES':([5,13,15,16,17,21,38,39,40,41,42,43,44,45,48,49,],[-28,34,-24,-27,-30,-28,-29,34,34,34,34,34,34,34,-25,-26,]),'DIVIDE':([5,13,15,16,17,21,38,39,40,41,42,43,44,45,48,49,],[-28,35,-24,-27,-30,-28,-29,35,35,35,35,35,35,35,-25,-26,]),'NEWLINE':([5,8,13,14,15,16,17,21,38,39,40,41,42,43,44,45,48,49,],[-28,23,-15,-18,-24,-27,-30,-28,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,]),'PLUS':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,24,-15,-18,-24,-27,-30,24,-28,24,24,-29,-16,-17,-19,-20,-21,-22,-23,24,24,-25,-26,]),'MINUS':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,25,-15,-18,-24,-27,-30,25,-28,25,25,-29,-16,-17,-19,-20,-21,-22,-23,25,25,-25,-26,]),'GREATER':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,26,-15,-18,-24,-27,-30,26,-28,26,26,-29,-16,-17,-19,-20,-21,-22,-23,26,26,-25,-26,]),'LESS':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,27,-15,-18,-24,-27,-30,27,-28,27,27,-29,-16,-17,-19,-20,-21,-22,-23,27,27,-25,-26,]),'GREATER_EQUAL':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,28,-15,-18,-24,-27,-30,28,-28,28,28,-29,-16,-17,-19,-20,-21,-22,-23,28,28,-25,-26,]),'LESS_EQUAL':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,29,-15,-18,-24,-27,-30,29,-28,29,29,-29,-16,-17,-19,-20,-21,-22,-23,29,29,-25,-26,]),'EQUAL':([5,8,13,14,15,16,17,20,21,33,37,38,39,40,41,42,43,44,45,46,47,48,49,],[-28,30,-15,-18,-24,-27,-30,30,-28,30,30,-29,-16,-17,-19,-20,-21,-22,-23,30,30,-25,-26,]),'BRACE_R':([7,11,13,14,15,16,17,21,22,23,33,37,38,39,40,41,42,43,44,45,48,49,61,62,63,64,65,],[-7,-12,-15,-18,-24,-27,-30,-28,-8,-9,-13,-14,-29,-16,-17,-19,-20,-21,-22,-23,-25,-26,64,65,66,-10,-11,]),'PARENTHESIS_R':([13,14,15,16,17,20,21,36,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,55,59,],[-15,-18,-24,-27,-30,38,-28,-31,-29,-16,-17,-19,-20,-21,-22,-23,53,54,-25,-26,-4,56,-6,-31,-5,]),'COMMA':([50,],[55,]),'BRACE_L':([53,54,56,],[57,58,60,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,65,66,67,],[2,69,70,71,]),'statement':([0,2,65,66,67,69,70,71,],[3,17,3,3,3,17,17,17,]),'var_declaration':([0,2,65,66,67,69,70,71,],[4,4,4,4,4,4,4,4,]),'if_statement':([0,2,65,66,67,69,70,71,],[5,5,5,5,5,5,5,5,]),'while_statement':([0,2,65,66,67,69,70,71,],[6,6,6,6,6,6,6,6,]),'function_definition':([0,2,65,66,67,69,70,71,],[7,7,7,7,7,7,7,7,]),'function_call':([0,2,65,66,67,69,70,71,],[8,8,8,8,8,8,8,8,]),'assignment':([0,2,65,66,67,69,70,71,],[9,9,9,9,9,9,9,9,]),'type':([0,2,24,54,65,66,67,69,70,71,],[10,10,35,35,10,10,10,10,10,10,]),'arg_list':([19,],[27,]),'expression':([19,20,21,22,26,41,42,43,44,45,46,47,48,],[28,32,33,34,39,57,58,59,60,61,62,63,64,]),'empty':([19,24,],[29,38,]),'param_list':([24,],[36,]),'param':([24,54,],[37,68,]),}
+_lr_goto_items = {'program':([0,],[1,]),'function':([0,],[2,]),'statements':([0,7,57,58,60,],[3,22,61,62,63,]),'statement':([0,7,57,58,60,],[7,7,7,7,7,]),'expression':([0,6,7,12,19,31,32,57,58,60,],[8,20,8,33,37,46,47,8,8,8,]),'term':([0,6,7,12,19,24,25,26,27,28,29,30,31,32,57,58,60,],[13,13,13,13,13,39,40,41,42,43,44,45,13,13,13,13,13,]),'comparison':([0,6,7,12,19,31,32,57,58,60,],[14,14,14,14,14,14,14,14,14,14,]),'factor':([0,6,7,12,19,24,25,26,27,28,29,30,31,32,34,35,57,58,60,],[15,15,15,15,15,15,15,15,15,15,15,15,15,15,48,49,15,15,15,]),'params':([36,55,],[51,59,]),'empty':([36,55,],[52,52,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,41 +27,35 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statement_list','program',1,'p_program','parser_rules.py',6),
-  ('statement_list -> statement','statement_list',1,'p_statement_list','parser_rules.py',10),
-  ('statement_list -> statement_list statement','statement_list',2,'p_statement_list','parser_rules.py',11),
-  ('statement -> var_declaration','statement',1,'p_statement','parser_rules.py',18),
-  ('statement -> if_statement','statement',1,'p_statement','parser_rules.py',19),
-  ('statement -> while_statement','statement',1,'p_statement','parser_rules.py',20),
-  ('statement -> function_definition','statement',1,'p_statement','parser_rules.py',21),
-  ('statement -> function_call','statement',1,'p_statement','parser_rules.py',22),
-  ('statement -> assignment','statement',1,'p_statement','parser_rules.py',23),
-  ('var_declaration -> type NAME SEMICOLON','var_declaration',3,'p_var_declaration','parser_rules.py',27),
-  ('type -> INT','type',1,'p_type','parser_rules.py',31),
-  ('type -> BOOL','type',1,'p_type','parser_rules.py',32),
-  ('type -> STRING','type',1,'p_type','parser_rules.py',33),
-  ('if_statement -> IF LPAREN expression RPAREN LBRACE statement_list RBRACE','if_statement',7,'p_if_statement','parser_rules.py',37),
-  ('while_statement -> WHILE LPAREN expression RPAREN LBRACE statement_list RBRACE','while_statement',7,'p_while_statement','parser_rules.py',41),
-  ('function_definition -> type NAME LPAREN param_list RPAREN LBRACE statement_list RBRACE','function_definition',8,'p_function_definition','parser_rules.py',45),
-  ('param_list -> param','param_list',1,'p_param_list','parser_rules.py',49),
-  ('param_list -> param_list COMMA param','param_list',3,'p_param_list','parser_rules.py',50),
-  ('param_list -> empty','param_list',1,'p_param_list','parser_rules.py',51),
-  ('param -> type NAME','param',2,'p_param','parser_rules.py',58),
-  ('function_call -> NAME LPAREN arg_list RPAREN SEMICOLON','function_call',5,'p_function_call','parser_rules.py',62),
-  ('arg_list -> expression','arg_list',1,'p_arg_list','parser_rules.py',66),
-  ('arg_list -> arg_list COMMA expression','arg_list',3,'p_arg_list','parser_rules.py',67),
-  ('arg_list -> empty','arg_list',1,'p_arg_list','parser_rules.py',68),
-  ('assignment -> NAME ASSIGN expression SEMICOLON','assignment',4,'p_assignment','parser_rules.py',75),
-  ('expression -> NAME','expression',1,'p_expression','parser_rules.py',79),
-  ('expression -> CONSTANT','expression',1,'p_expression','parser_rules.py',80),
-  ('expression -> FLOAT','expression',1,'p_expression','parser_rules.py',81),
-  ('expression -> expression PLUS expression','expression',3,'p_expression','parser_rules.py',82),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','parser_rules.py',83),
-  ('expression -> expression TIMES expression','expression',3,'p_expression','parser_rules.py',84),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression','parser_rules.py',85),
-  ('expression -> expression MOD expression','expression',3,'p_expression','parser_rules.py',86),
-  ('expression -> expression AND expression','expression',3,'p_expression','parser_rules.py',87),
-  ('expression -> expression OR expression','expression',3,'p_expression','parser_rules.py',88),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression','parser_rules.py',89),
-  ('empty -> <empty>','empty',0,'p_empty','parser_rules.py',99),
+  ('program -> function','program',1,'p_program','sintatic.py',29),
+  ('program -> statements','program',1,'p_program','sintatic.py',30),
+  ('function -> FUNCTION VARIABLE PARENTHESIS_L params PARENTHESIS_R BRACE_L statements BRACE_R','function',8,'p_function','sintatic.py',35),
+  ('params -> VARIABLE','params',1,'p_params','sintatic.py',40),
+  ('params -> VARIABLE COMMA params','params',3,'p_params','sintatic.py',41),
+  ('params -> empty','params',1,'p_params','sintatic.py',42),
+  ('statements -> statement','statements',1,'p_statements','sintatic.py',52),
+  ('statements -> statement statements','statements',2,'p_statements','sintatic.py',53),
+  ('statement -> expression NEWLINE','statement',2,'p_statement','sintatic.py',61),
+  ('statement -> WHILE PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R','statement',7,'p_statement','sintatic.py',62),
+  ('statement -> IF PARENTHESIS_L expression PARENTHESIS_R BRACE_L statements BRACE_R','statement',7,'p_statement','sintatic.py',63),
+  ('statement -> BREAK','statement',1,'p_statement','sintatic.py',64),
+  ('statement -> RETURN expression','statement',2,'p_statement','sintatic.py',65),
+  ('statement -> VARIABLE ASSIGN expression','statement',3,'p_statement_assignment','sintatic.py',79),
+  ('expression -> term','expression',1,'p_expression','sintatic.py',84),
+  ('expression -> expression PLUS term','expression',3,'p_expression','sintatic.py',85),
+  ('expression -> expression MINUS term','expression',3,'p_expression','sintatic.py',86),
+  ('expression -> comparison','expression',1,'p_expression','sintatic.py',87),
+  ('comparison -> expression GREATER term','comparison',3,'p_comparison','sintatic.py',95),
+  ('comparison -> expression LESS term','comparison',3,'p_comparison','sintatic.py',96),
+  ('comparison -> expression GREATER_EQUAL term','comparison',3,'p_comparison','sintatic.py',97),
+  ('comparison -> expression LESS_EQUAL term','comparison',3,'p_comparison','sintatic.py',98),
+  ('comparison -> expression EQUAL term','comparison',3,'p_comparison','sintatic.py',99),
+  ('term -> factor','term',1,'p_term','sintatic.py',104),
+  ('term -> term TIMES factor','term',3,'p_term','sintatic.py',105),
+  ('term -> term DIVIDE factor','term',3,'p_term','sintatic.py',106),
+  ('factor -> NUMBER','factor',1,'p_factor','sintatic.py',114),
+  ('factor -> VARIABLE','factor',1,'p_factor','sintatic.py',115),
+  ('factor -> PARENTHESIS_L expression PARENTHESIS_R','factor',3,'p_factor','sintatic.py',116),
+  ('factor -> STRING','factor',1,'p_factor','sintatic.py',117),
+  ('empty -> <empty>','empty',0,'p_empty','sintatic.py',125),
 ]
