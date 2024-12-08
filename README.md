@@ -31,3 +31,13 @@ Para rodar este projeto, é necessário ter Python ou Python3 instalado. Além d
     ```
     python3 src/main.py
     ```
+
+4. **Código de exemplo:**
+    Agora você pode usar o seguinte código como exemplo no compilador:
+    ```
+    x = "Hello, world",
+    
+    while (x > 0) {
+        x = x - 1
+    }
+    ```
